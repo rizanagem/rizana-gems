@@ -1,23 +1,24 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 
 export default function Hero() {
   return (
     <section className="relative w-full h-[80vh] min-h-[600px] flex items-center bg-brand-black overflow-hidden border-b border-neutral-900">
       
-      {/* Background Image - 1920x1080 Recommended */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
+        {/* Gradient Overlay to keep text readable */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-transparent z-10" />
         
-        <Image 
-          src="/hero-banner-luxury-vault.jpg.webp" 
-          alt="Hero Placeholder"
-          fill 
-          className="object-cover opacity-60" 
-          priority 
-          unoptimized // Allows external placeholder URL without config changes
-        />
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="w-full h-full object-cover opacity-60"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Foreground Content */}
