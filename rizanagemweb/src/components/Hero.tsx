@@ -11,7 +11,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-transparent z-10" />
         
         <Image 
-          src="https://placehold.co/1920x1080/222222/666666?text=Hero+Banner\n1920+x+1080" 
+          src="/hero-banner-luxury-vault.jpg.webp" 
           alt="Hero Placeholder"
           fill 
           className="object-cover opacity-60" 
