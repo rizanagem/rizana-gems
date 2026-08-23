@@ -9,7 +9,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         {/* Gradient Overlay to keep text readable */}
         {/* 1. Changed via-brand-black/80 to via-brand-black/40 */}
-<div className="absolute inset-0 bg-gradient-to-r from-brand-black/80 via-brand-black/40 to-transparent z-10" />
+<div className="absolute inset-0 bg-gradient-to-r from-brand-black/50 via-brand-black/20 to-transparent z-10" />
         
 {/* 2. Changed opacity-60 to opacity-90 (or remove opacity-60 completely for full brightness) */}
 <video 
