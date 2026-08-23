@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image"; // Added Image import
 import { Search, User, ShoppingBag, ChevronDown } from "lucide-react";
 
 const toolsAndEquipment = [
@@ -85,10 +86,16 @@ export default function Navbar() {
           <Link href="/about" className="hover:text-brand-gold transition-colors">About Us</Link>
         </nav>
 
-        {/* Center: Logo */}
-        <Link href="/" className="flex flex-col items-center justify-center absolute left-1/2 -translate-x-1/2">
-          <span className="text-2xl md:text-3xl font-serif tracking-widest text-white">RIZANA</span>
-          <span className="text-xs font-sans tracking-[0.4em] text-brand-gold mt-1">GEMS</span>
+        {/* Center: Image Logo */}
+        <Link href="/" className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
+          <Image 
+            src="/logo.png" 
+            alt="Rizana Gems" 
+            width={160} 
+            height={60} 
+            className="object-contain h-auto w-32 md:w-40" 
+            priority 
+          />
         </Link>
 
         {/* Right: Icons */}
