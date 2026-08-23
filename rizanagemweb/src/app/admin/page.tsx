@@ -8,15 +8,31 @@ import { Upload, Plus, CheckCircle, Trash2, ImagePlus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-// A pre-loaded list of common categories (You can expand this later)
-const existingCategories = [
-  { label: "Jewelry", value: "jewelry" },
-  { label: "Gemstones", value: "gemstones" },
-  { label: "Rings", value: "rings" },
-  { label: "Necklaces", value: "necklaces" },
-  { label: "Welders", value: "welders" },
-  { label: "Burs & Drills", value: "burs-drills" },
-  { label: "Storage & Organizers", value: "storage-organizers" },
+// Grouped categories for an organized admin dropdown
+const groupedCategories = [
+  {
+    label: "Main Categories",
+    options: [
+      { label: "Jewelry", value: "jewelry" },
+      { label: "Gemstones", value: "gemstones" },
+    ]
+  },
+  {
+    label: "Jewelry Subcategories",
+    options: [
+      { label: "Rings", value: "rings" },
+      { label: "Necklaces", value: "necklaces" },
+    ]
+  },
+  {
+    label: "Tools & Equipment",
+    options: [
+      { label: "Welders", value: "welders" },
+      { label: "Burs & Drills", value: "burs-drills" },
+      { label: "Storage & Organizers", value: "storage-organizers" },
+      // Add more tool categories here as needed
+    ]
+  }
 ];
 
 export default function AdminDashboard() {
@@ -170,7 +186,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                {/* DYNAMIC CATEGORY SECTION */}
+                {/* DYNAMIC CATEGORY SECTION WITH OPTGROUPS */}
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Category</label>
                   <select 
@@ -179,10 +195,25 @@ export default function AdminDashboard() {
                     className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors"
                   >
                     <option value="" disabled>Select a category</option>
-                    {existingCategories.map((cat) => (
-                      <option key={cat.value} value={cat.value}>{cat.label}</option>
+                    
+                    {groupedCategories.map((group, groupIndex) => (
+                      <optgroup 
+                        key={groupIndex} 
+                        label={group.label} 
+                        className="text-brand-silver font-semibold bg-brand-dark uppercase tracking-widest text-[10px]"
+                      >
+                        {group.options.map((cat) => (
+                          <option key={cat.value} value={cat.value} className="text-white text-sm normal-case font-normal bg-brand-black">
+                            {cat.label}
+                          </option>
+                        ))}
+                      </optgroup>
                     ))}
-                    <option value="ADD_NEW" className="font-semibold text-brand-gold">+ Create New Category...</option>
+                    
+                    <optgroup label="Custom" className="text-brand-gold font-semibold bg-brand-dark uppercase tracking-widest text-[10px]">
+                      <option value="ADD_NEW" className="font-semibold text-brand-gold bg-brand-black text-sm normal-case">+ Create New Category...</option>
+                    </optgroup>
+
                   </select>
 
                   {/* Pops up only if 'Create New Category' is selected */}
