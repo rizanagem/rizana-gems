@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,12 +10,12 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Next.js Singleton Pattern: 
-// Checks if a Firebase instance already exists before initializing a new one.
-// This prevents "FirebaseApp already exists" errors during development hot-reloads.
+// Initialize Firebase safely for Next.js
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Initialize Firestore
-const db = getFirestore(app);
+// Force long polling to bypass Codespace/Proxy network blocks
+const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
 
-export { app, db };
+export { db };
