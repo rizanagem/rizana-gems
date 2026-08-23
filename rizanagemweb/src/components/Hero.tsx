@@ -8,15 +8,17 @@ export default function Hero() {
       {/* Background Video */}
       <div className="absolute inset-0 z-0">
         {/* Gradient Overlay to keep text readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-black via-brand-black/80 to-transparent z-10" />
+        {/* 1. Changed via-brand-black/80 to via-brand-black/40 */}
+<div className="absolute inset-0 bg-gradient-to-r from-brand-black/80 via-brand-black/40 to-transparent z-10" />
         
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="w-full h-full object-cover opacity-60"
-        >
+{/* 2. Changed opacity-60 to opacity-90 (or remove opacity-60 completely for full brightness) */}
+<video 
+  autoPlay 
+  loop 
+  muted 
+  playsInline 
+  className="w-full h-full object-cover opacity-90"
+>
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
       </div>

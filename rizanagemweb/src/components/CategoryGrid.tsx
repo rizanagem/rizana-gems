@@ -31,7 +31,7 @@ export default function CategoryGrid() {
           <Link href="/categories/jewelry" className="group relative h-[450px] overflow-hidden rounded-md bg-neutral-900 flex flex-col justify-end p-8">
             <Image src="/timeless-iamonds.webp" alt="Category 2" fill className="object-cover transition-transform duration-700 group-hover:scale-105 z-0" unoptimized />
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-dark to-neutral-600/30 transition-transform duration-700 group-hover:scale-105 z-10"></div>
-            <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500 z-10"></div>
+            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors z-10"></div>
             <div className="relative z-20">
               <h3 className="font-serif text-3xl text-white mb-4 leading-tight">Timeless<br />Diamonds</h3>
               <div className="flex items-center gap-2 text-white text-xs font-semibold uppercase tracking-widest">Shop Now <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" /></div>
