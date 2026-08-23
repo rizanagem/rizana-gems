@@ -1,19 +1,18 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore, initializeFirestore } from "firebase/firestore";
 
+// Temporarily hardcoding these to bypass the "undefined" error
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyDL_KOm4tepQTxFfz8_-j5UPt_e3avNIAk",
+  authDomain: "rizana-gems.firebaseapp.com",
+  projectId: "rizana-gems",
+  storageBucket: "rizana-gems.firebasestorage.app",
+  messagingSenderId: "835681794966",
+  appId: "1:835681794966:web:b963f40f0f88fc4bdc7bb7"
 };
 
-// Initialize Firebase safely for Next.js
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Force long polling to bypass Codespace/Proxy network blocks
 const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
 });
