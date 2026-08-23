@@ -8,23 +8,37 @@ import { Upload, Plus, CheckCircle, Trash2, ImagePlus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
+// A pre-loaded list of common categories (You can expand this later)
+const existingCategories = [
+  { label: "Jewelry", value: "jewelry" },
+  { label: "Gemstones", value: "gemstones" },
+  { label: "Rings", value: "rings" },
+  { label: "Necklaces", value: "necklaces" },
+  { label: "Welders", value: "welders" },
+  { label: "Burs & Drills", value: "burs-drills" },
+  { label: "Storage & Organizers", value: "storage-organizers" },
+];
+
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   
-  // Basic Form State
+  // Basic Form State (Category removed from here)
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    category: "Gemstones",
     description: "",
   });
+
+  // Dynamic Category State
+  const [selectedCategory, setSelectedCategory] = useState("gemstones");
+  const [newCategoryName, setNewCategoryName] = useState("");
 
   // Physical File State
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -51,10 +65,28 @@ export default function AdminDashboard() {
     setLoading(true);
     setSuccess(false);
 
+    // 1. Determine the final category string/slug
+    let finalCategorySlug = "";
+    if (selectedCategory === "ADD_NEW") {
+      finalCategorySlug = newCategoryName
+        .toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    } else {
+      finalCategorySlug = selectedCategory;
+    }
+
+    if (!finalCategorySlug) {
+      alert("Please select or create a category.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const uploadedUrls: string[] = [];
 
-      // 1. Upload all selected images to Vercel Blob
+      // 2. Upload all selected images to Vercel Blob
       for (let i = 0; i < imageFiles.length; i++) {
         const file = imageFiles[i];
         const uploadData = new FormData();
@@ -68,19 +100,21 @@ export default function AdminDashboard() {
         uploadedUrls.push("https://placehold.co/800x1000/1a1a1a/666666?text=No+Image");
       }
 
-      // 2. Save product data + Vercel Blob URLs to Firebase
+      // 3. Save product data + Vercel Blob URLs to Firebase
       await addDoc(collection(db, "products"), {
         title: formData.title,
         price: parseFloat(formData.price),
-        category: formData.category,
+        category: finalCategorySlug, // Saved dynamically!
         description: formData.description,
         images: uploadedUrls,
         createdAt: new Date(),
       });
 
-      // 3. Reset Form
+      // 4. Reset Form
       setSuccess(true);
-      setFormData({ title: "", price: "", category: "Gemstones", description: "" });
+      setFormData({ title: "", price: "", description: "" });
+      setSelectedCategory("gemstones");
+      setNewCategoryName("");
       setImageFiles([]);
       setImagePreviews([]);
     } catch (error) {
@@ -136,18 +170,37 @@ export default function AdminDashboard() {
                   />
                 </div>
 
+                {/* DYNAMIC CATEGORY SECTION */}
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Category</label>
                   <select 
-                    name="category" value={formData.category} onChange={handleChange}
+                    value={selectedCategory} 
+                    onChange={(e) => setSelectedCategory(e.target.value)}
                     className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors"
                   >
-                    <option value="Jewelry">Jewelry</option>
-                    <option value="Gemstones">Gemstones</option>
-                    <option value="Tools">Jeweler Tools</option>
-                    <option value="Rings">Rings</option>
-                    <option value="Necklaces">Necklaces</option>
+                    <option value="" disabled>Select a category</option>
+                    {existingCategories.map((cat) => (
+                      <option key={cat.value} value={cat.value}>{cat.label}</option>
+                    ))}
+                    <option value="ADD_NEW" className="font-semibold text-brand-gold">+ Create New Category...</option>
                   </select>
+
+                  {/* Pops up only if 'Create New Category' is selected */}
+                  {selectedCategory === "ADD_NEW" && (
+                    <div className="mt-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                      <input
+                        type="text"
+                        placeholder="Enter new category (e.g. Diamond Testers)"
+                        value={newCategoryName}
+                        onChange={(e) => setNewCategoryName(e.target.value)}
+                        className="w-full bg-brand-dark border border-neutral-700 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors"
+                        required
+                      />
+                      <p className="text-xs text-neutral-500 mt-2">
+                        Creates a new page at <code className="text-brand-gold">/collections/your-new-category</code>
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
