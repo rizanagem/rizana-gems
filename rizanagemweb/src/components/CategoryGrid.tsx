@@ -29,7 +29,7 @@ export default function CategoryGrid() {
 
           {/* Card 2 */}
           <Link href="/categories/jewelry" className="group relative h-[450px] overflow-hidden rounded-md bg-neutral-900 flex flex-col justify-end p-8">
-            <Image src="https://placehold.co/800x1000/1a1a1a/666666?text=Category+Card\n800+x+1000" alt="Category 2" fill className="object-cover transition-transform duration-700 group-hover:scale-105 z-0" unoptimized />
+            <Image src="/timeless-iamonds.webp" alt="Category 2" fill className="object-cover transition-transform duration-700 group-hover:scale-105 z-0" unoptimized />
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-dark to-neutral-600/30 transition-transform duration-700 group-hover:scale-105 z-10"></div>
             <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500 z-10"></div>
             <div className="relative z-20">
@@ -40,7 +40,7 @@ export default function CategoryGrid() {
 
           {/* Card 3 */}
           <Link href="/categories/gemstones" className="group relative h-[450px] overflow-hidden rounded-md bg-neutral-900 flex flex-col justify-end p-8">
-            <Image src="https://placehold.co/800x1000/1a1a1a/666666?text=Category+Card\n800+x+1000" alt="Category 3" fill className="object-cover transition-transform duration-700 group-hover:scale-105 z-0" unoptimized />
+            <Image src="/royal-sapphires.webp" alt="Category 3" fill className="object-cover transition-transform duration-700 group-hover:scale-105 z-0" unoptimized />
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-dark to-blue-900/40 transition-transform duration-700 group-hover:scale-105 z-10"></div>
             <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500 z-10"></div>
             <div className="relative z-20">
