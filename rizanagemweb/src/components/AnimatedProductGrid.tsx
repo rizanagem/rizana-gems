@@ -27,7 +27,8 @@ export default function AnimatedProductGrid({ products }: { products: any[] }) {
         return (
           <motion.div variants={item} key={product.id} className="h-full">
             
-            <Link href={`/collections/${product.id}`} className="group cursor-pointer flex flex-col h-full">
+            {/* FIXED THE LINK HERE to point to /products/ instead of /collections/ */}
+            <Link href={`/products/${product.id}`} className="group cursor-pointer flex flex-col h-full">
               {/* Product Image */}
               <div className="relative w-full aspect-[4/5] bg-brand-dark mb-4 overflow-hidden rounded-sm flex items-center justify-center">
                 {productImage ? (
