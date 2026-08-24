@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image"; // Added Image import
+import Image from "next/image"; 
 import { Search, User, ShoppingBag, ChevronDown } from "lucide-react";
 
 const toolsAndEquipment = [
@@ -50,44 +50,18 @@ export default function Navbar() {
       </div>
 
       {/* Main Navigation */}
-      <div className="flex justify-between items-center px-6 md:px-12 py-6 bg-brand-black border-b border-brand-dark">
+      <div className="flex justify-between items-center px-6 md:px-12 py-6 bg-brand-black border-b border-brand-dark relative">
         
         {/* Left: Navigation Links */}
-        <nav className="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase items-center">
-          <Link href="/categories/jewelry" className="hover:text-brand-gold transition-colors">Jewelry</Link>
-          <Link href="/categories/gemstones" className="hover:text-brand-gold transition-colors">Gemstones</Link>
-          
-          {/* Tools & Equipment Mega Menu */}
-          <div className="relative group py-2">
-            <Link href="/categories/tools" className="flex items-center gap-1 hover:text-brand-gold transition-colors">
-              Tools & Equipment <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
-            </Link>
-            
-            {/* Dropdown Container */}
-            <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[500px]">
-              <div className="bg-brand-black border border-brand-dark shadow-2xl p-6 relative">
-                {/* Scrollable Grid */}
-                <ul className="max-h-[50vh] overflow-y-auto custom-scrollbar grid grid-cols-2 gap-x-6 gap-y-4 pr-4">
-                  {toolsAndEquipment.map((tool, index) => (
-                    <li key={index}>
-                      <Link 
-                        href={tool.href} 
-                        className="block text-brand-silver hover:text-brand-gold text-xs normal-case tracking-wide transition-colors"
-                      >
-                        {tool.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <Link href="/about" className="hover:text-brand-gold transition-colors">About Us</Link>
-        </nav>
+        <div className="flex-1 flex justify-start">
+          <nav className="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase items-center">
+            <Link href="/categories/jewelry" className="hover:text-brand-gold transition-colors">Jewelry</Link>
+            <Link href="/categories/gemstones" className="hover:text-brand-gold transition-colors">Gemstones</Link>
+          </nav>
+        </div>
 
         {/* Center: Image Logo */}
-        <Link href="/" className="flex items-center justify-center absolute left-1/2 -translate-x-1/2">
+        <Link href="/" className="flex items-center justify-center absolute left-1/2 -translate-x-1/2 z-10">
           <Image 
             src="/logo.png" 
             alt="Rizana Gems" 
@@ -98,22 +72,57 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Right: Icons */}
-        <div className="flex space-x-6 items-center">
-          <button className="hover:text-brand-gold transition-colors">
-            <Search size={20} strokeWidth={1.5} />
-          </button>
-          <button className="hidden md:block hover:text-brand-gold transition-colors">
-            <User size={20} strokeWidth={1.5} />
-          </button>
-          <button className="hover:text-brand-gold transition-colors relative">
-            <ShoppingBag size={20} strokeWidth={1.5} />
-            {/* Cart notification dot */}
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-gold"></span>
-            </span>
-          </button>
+        {/* Right: Navigation Links & Icons */}
+        <div className="flex-1 flex justify-end items-center">
+          <nav className="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase items-center">
+            
+            {/* Tools & Equipment Mega Menu */}
+            <div className="relative group py-2">
+              <Link href="/categories/tools" className="flex items-center gap-1 hover:text-brand-gold transition-colors">
+                Tools & Equipment <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
+              </Link>
+              
+              {/* Dropdown Container - Now anchored to the right side so it doesn't overflow */}
+              <div className="absolute top-full right-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[500px]">
+                <div className="bg-brand-black border border-brand-dark shadow-2xl p-6 relative">
+                  {/* Scrollable Grid */}
+                  <ul className="max-h-[50vh] overflow-y-auto custom-scrollbar grid grid-cols-2 gap-x-6 gap-y-4 pr-4 text-left">
+                    {toolsAndEquipment.map((tool, index) => (
+                      <li key={index}>
+                        <Link 
+                          href={tool.href} 
+                          className="block text-brand-silver hover:text-brand-gold text-xs normal-case tracking-wide transition-colors"
+                        >
+                          {tool.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <Link href="/about" className="hover:text-brand-gold transition-colors">About Us</Link>
+            <Link href="/contact" className="hover:text-brand-gold transition-colors">Contact Us</Link>
+          </nav>
+
+          {/* Icons */}
+          <div className="flex space-x-6 items-center ml-0 md:ml-8 md:pl-8 md:border-l border-neutral-800">
+            <button className="hover:text-brand-gold transition-colors">
+              <Search size={20} strokeWidth={1.5} />
+            </button>
+            <button className="hidden md:block hover:text-brand-gold transition-colors">
+              <User size={20} strokeWidth={1.5} />
+            </button>
+            <button className="hover:text-brand-gold transition-colors relative">
+              <ShoppingBag size={20} strokeWidth={1.5} />
+              {/* Cart notification dot */}
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-gold"></span>
+              </span>
+            </button>
+          </div>
         </div>
         
       </div>

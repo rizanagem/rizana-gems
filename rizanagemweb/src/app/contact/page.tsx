@@ -38,8 +38,9 @@ export default function ContactPage() {
               <div>
                 <h4 className="font-serif text-white text-base mb-1">Showroom</h4>
                 <p className="font-sans text-brand-silver text-xs leading-relaxed">
-                  Rizana Gems & Jewelry<br />
-                  Colombo, Sri Lanka
+                  209, Sea Street<br />
+                  Colombo 11, Colombo<br />
+                  Sri Lanka, 01100
                 </p>
               </div>
             </div>
@@ -49,8 +50,9 @@ export default function ContactPage() {
               <div>
                 <h4 className="font-serif text-white text-base mb-1">Email Us</h4>
                 <p className="font-sans text-brand-silver text-xs leading-relaxed">
-                  support@rizanagems.com<br />
-                  concierge@rizanagems.com
+                  <a href="mailto:rizanagems@gmail.com" className="hover:text-brand-gold transition-colors">
+                    rizanagems@gmail.com
+                  </a>
                 </p>
               </div>
             </div>
@@ -58,10 +60,11 @@ export default function ContactPage() {
             <div className="flex items-start gap-4">
               <Phone className="text-brand-gold shrink-0 mt-1" size={20} strokeWidth={1.5} />
               <div>
-                <h4 className="font-serif text-white text-base mb-1">Call / WhatsApp</h4>
+                <h4 className="font-serif text-white text-base mb-1">Call Us</h4>
                 <p className="font-sans text-brand-silver text-xs leading-relaxed">
-                  +94 (11) 234-5678<br />
-                  +94 (77) 123-4567
+                  <a href="tel:0112422927" className="hover:text-brand-gold transition-colors">
+                    0112 422 927
+                  </a>
                 </p>
               </div>
             </div>
