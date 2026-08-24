@@ -42,7 +42,7 @@ export default function Navbar() {
   return (
     <header className="w-full relative z-50">
       {/* Top Announcement Bar */}
-      <div className="hidden md:flex justify-center md:justify-between items-center px-12 py-2 bg-brand-dark text-xs tracking-wider text-brand-silver">
+      <div className="hidden lg:flex justify-center lg:justify-between items-center px-12 py-2 bg-brand-dark text-xs tracking-wider text-brand-silver">
         <span>Worldwide Shipping</span>
         <span>Certified Gemstones</span>
         <span>Secure Payments</span>
@@ -50,31 +50,13 @@ export default function Navbar() {
       </div>
 
       {/* Main Navigation */}
-      <div className="flex justify-between items-center px-6 md:px-12 py-6 bg-brand-black border-b border-brand-dark relative">
+      <div className="flex justify-between items-center px-6 lg:px-12 py-6 bg-brand-black border-b border-brand-dark">
         
-        {/* Left: Navigation Links */}
+        {/* Left: Navigation Links (Products) */}
         <div className="flex-1 flex justify-start">
-          <nav className="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase items-center">
+          <nav className="hidden lg:flex space-x-6 xl:space-x-8 text-sm font-medium tracking-widest uppercase items-center">
             <Link href="/categories/jewelry" className="hover:text-brand-gold transition-colors">Jewelry</Link>
             <Link href="/categories/gemstones" className="hover:text-brand-gold transition-colors">Gemstones</Link>
-          </nav>
-        </div>
-
-        {/* Center: Image Logo */}
-        <Link href="/" className="flex items-center justify-center absolute left-1/2 -translate-x-1/2 z-10">
-          <Image 
-            src="/logo.png" 
-            alt="Rizana Gems" 
-            width={160} 
-            height={60} 
-            className="object-contain h-auto w-32 md:w-40" 
-            priority 
-          />
-        </Link>
-
-        {/* Right: Navigation Links & Icons */}
-        <div className="flex-1 flex justify-end items-center">
-          <nav className="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase items-center">
             
             {/* Tools & Equipment Mega Menu */}
             <div className="relative group py-2">
@@ -82,10 +64,9 @@ export default function Navbar() {
                 Tools & Equipment <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
               </Link>
               
-              {/* Dropdown Container - Now anchored to the right side so it doesn't overflow */}
-              <div className="absolute top-full right-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[500px]">
+              {/* Dropdown Container - Back to left-0 since it is on the left side now */}
+              <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[500px]">
                 <div className="bg-brand-black border border-brand-dark shadow-2xl p-6 relative">
-                  {/* Scrollable Grid */}
                   <ul className="max-h-[50vh] overflow-y-auto custom-scrollbar grid grid-cols-2 gap-x-6 gap-y-4 pr-4 text-left">
                     {toolsAndEquipment.map((tool, index) => (
                       <li key={index}>
@@ -101,13 +82,30 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
+          </nav>
+        </div>
 
+        {/* Center: Image Logo */}
+        <Link href="/" className="flex-shrink-0 flex items-center justify-center px-4">
+          <Image 
+            src="/logo.png" 
+            alt="Rizana Gems" 
+            width={160} 
+            height={60} 
+            className="object-contain h-auto w-32 md:w-40" 
+            priority 
+          />
+        </Link>
+
+        {/* Right: Navigation Links & Icons */}
+        <div className="flex-1 flex justify-end items-center">
+          <nav className="hidden lg:flex space-x-6 xl:space-x-8 text-sm font-medium tracking-widest uppercase items-center">
             <Link href="/about" className="hover:text-brand-gold transition-colors">About Us</Link>
             <Link href="/contact" className="hover:text-brand-gold transition-colors">Contact Us</Link>
           </nav>
 
           {/* Icons */}
-          <div className="flex space-x-6 items-center ml-0 md:ml-8 md:pl-8 md:border-l border-neutral-800">
+          <div className="flex space-x-6 items-center ml-0 lg:ml-6 xl:ml-8 lg:pl-6 xl:pl-8 lg:border-l border-neutral-800">
             <button className="hover:text-brand-gold transition-colors">
               <Search size={20} strokeWidth={1.5} />
             </button>
