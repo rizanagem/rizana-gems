@@ -14,8 +14,9 @@ interface ProductAccordionProps {
 }
 
 export default function ProductAccordion({ description, specifications = [] }: ProductAccordionProps) {
-  const [isDescOpen, setIsDescOpen] = useState(true); // Open by default
-  const [isSpecsOpen, setIsSpecsOpen] = useState(false);
+  // We swapped these default states!
+  const [isDescOpen, setIsDescOpen] = useState(false);
+  const [isSpecsOpen, setIsSpecsOpen] = useState(true);
 
   return (
     <div className="w-full mt-8 border-t border-neutral-800">
