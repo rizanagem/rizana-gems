@@ -94,7 +94,7 @@ export default function Features() {
             {reviews.map((review, index) => (
               <div 
                 key={index} 
-                className="min-w-[300px] md:min-w-[380px] shrink-0 bg-brand-dark border border-neutral-800 p-8 rounded-sm snap-start flex flex-col justify-between hover:border-brand-gold/50 transition-colors"
+                className="w-[260px] md:w-[280px] h-[380px] shrink-0 bg-brand-dark border border-neutral-800 p-8 rounded-sm snap-start flex flex-col justify-between hover:border-brand-gold/50 transition-colors"
               >
                 <div>
                   <div className="flex gap-1 mb-6">
@@ -102,15 +102,17 @@ export default function Features() {
                       <Star key={i} size={14} className="text-brand-gold fill-brand-gold" />
                     ))}
                   </div>
-                  <p className="font-sans text-brand-silver text-sm italic leading-relaxed mb-8">
+                  <p className="font-sans text-brand-silver text-sm italic leading-relaxed mb-4">
                     "{review.text}"
                   </p>
                 </div>
-                <div className="flex items-center gap-3 border-t border-neutral-800 pt-4">
-                  <div className="w-8 h-8 rounded-full bg-brand-black flex items-center justify-center text-brand-gold font-serif text-sm border border-neutral-700">
+                
+                {/* Footer pinned to bottom by justify-between */}
+                <div className="flex items-center gap-3 border-t border-neutral-800 pt-6">
+                  <div className="w-8 h-8 rounded-full bg-brand-black flex items-center justify-center text-brand-gold font-serif text-sm border border-neutral-700 shrink-0">
                     {review.name.charAt(0)}
                   </div>
-                  <p className="font-serif text-white tracking-wide text-sm">
+                  <p className="font-serif text-white tracking-wide text-sm truncate">
                     {review.name}
                   </p>
                 </div>
