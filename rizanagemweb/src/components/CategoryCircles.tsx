@@ -6,42 +6,42 @@ const categories = [
   { 
     name: "Blue Sapphire", 
     href: "/collections/blue-sapphire", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Blue+Sapphire" 
+    image: "/images/blue_sapphire_cutout.png" 
   },
   { 
     name: "Padparadscha Sapphire", 
     href: "/collections/padparadscha-sapphire", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Padparadscha" 
+    image: "/images/padparadscha_cutout.png" 
   },
   { 
     name: "Star Sapphire", 
     href: "/collections/star-sapphire", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Star+Sapphire" 
+    image: "/images/star_sapphire_cutout.png" 
   },
   { 
     name: "Ruby", 
     href: "/collections/ruby", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Ruby" 
+    image: "/images/ruby_cutout.png" 
   },
   { 
     name: "Cat’s Eye", 
     href: "/collections/cats-eye", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Cats+Eye" 
+    image: "/images/cats_eye_cutout.png" 
   },
   { 
     name: "Alexandrite", 
     href: "/collections/alexandrite", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Alexandrite" 
+    image: "/images/alexandrite_cutout.png" 
   },
   { 
     name: "Spinel", 
     href: "/collections/spinel", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Spinel" 
+    image: "/images/spinel_cutout.png" 
   },
   { 
     name: "Garnet", 
     href: "/collections/garnet", 
-    image: "https://placehold.co/200x200/1a1a1a/666666?text=Garnet" 
+    image: "/images/garnet_cutout.png" 
   }
 ];
 
