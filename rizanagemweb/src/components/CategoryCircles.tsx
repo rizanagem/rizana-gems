@@ -6,42 +6,42 @@ const categories = [
   { 
     name: "Blue Sapphire", 
     href: "/collections/blue-sapphire", 
-    image: "/images/blue_sapphire_cutout.png" 
+    image: "/blue_sapphire_cutout.png" 
   },
   { 
     name: "Padparadscha Sapphire", 
     href: "/collections/padparadscha-sapphire", 
-    image: "/images/padparadscha_cutout.png" 
+    image: "/padparadscha_cutout.png" 
   },
   { 
     name: "Star Sapphire", 
     href: "/collections/star-sapphire", 
-    image: "/images/star_sapphire_cutout.png" 
+    image: "/star_sapphire_cutout.png" 
   },
   { 
     name: "Ruby", 
     href: "/collections/ruby", 
-    image: "/images/ruby_cutout.png" 
+    image: "/ruby_cutout.png" 
   },
   { 
     name: "Cat’s Eye", 
     href: "/collections/cats-eye", 
-    image: "/images/cats_eye_cutout.png" 
+    image: "/cats_eye_cutout.png" 
   },
   { 
     name: "Alexandrite", 
     href: "/collections/alexandrite", 
-    image: "/images/alexandrite_cutout.png" 
+    image: "/alexandrite_cutout.png" 
   },
   { 
     name: "Spinel", 
     href: "/collections/spinel", 
-    image: "/images/spinel_cutout.png" 
+    image: "/spinel_cutout.png" 
   },
   { 
     name: "Garnet", 
     href: "/collections/garnet", 
-    image: "/images/garnet_cutout.png" 
+    image: "/garnet_cutout.png" 
   }
 ];
 
