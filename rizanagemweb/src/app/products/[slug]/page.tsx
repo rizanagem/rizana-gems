@@ -7,9 +7,10 @@ import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { 
-  Star, Shield, Truck, RotateCcw, Heart, 
-  Minus, Plus, ShoppingBag, MessageCircle, Globe, Gem, ChevronRight
+  Star, Shield, Truck, RotateCcw, 
+  Minus, Plus, ShoppingBag, MessageCircle
 } from "lucide-react";
+import ProductAccordion from "@/components/ProductAccordion"; // <-- NEW IMPORT
 
 export default function ProductPage() {
   const params = useParams();
@@ -22,8 +23,6 @@ export default function ProductPage() {
   // UI State
   const [activeImage, setActiveImage] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [selectedCarat, setSelectedCarat] = useState("2.36 ct");
-  const [activeTab, setActiveTab] = useState("description");
 
   // Fetch the product from Firebase when the page loads
   useEffect(() => {
@@ -136,20 +135,15 @@ export default function ProductPage() {
               ${product.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-8">
               <div className="flex text-brand-gold">
                 {[...Array(5)].map((_, i) => <Star key={i} size={14} fill="currentColor" />)}
               </div>
               <span className="font-sans text-brand-silver text-xs tracking-wide">(Premium Quality)</span>
             </div>
 
-            {/* Real Product Description */}
-            <p className="font-sans text-brand-silver text-sm leading-relaxed mb-8 whitespace-pre-line">
-              {product.description}
-            </p>
-
             {/* Quantity & Actions */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-10">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <div className="flex items-center justify-between border border-neutral-800 rounded-sm px-4 py-3 sm:w-32">
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="text-brand-silver hover:text-white"><Minus size={16} /></button>
                 <span className="font-sans text-sm">{quantity}</span>
@@ -179,6 +173,12 @@ export default function ProductPage() {
                 <span className="font-sans text-[10px] uppercase tracking-wider text-brand-silver">30-Day Returns</span>
               </div>
             </div>
+
+            {/* NEW: Description & Specifications Accordion */}
+            <ProductAccordion 
+              description={product.description} 
+              specifications={product.specifications || []} 
+            />
 
           </div>
         </div>

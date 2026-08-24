@@ -74,10 +74,13 @@ export default function AdminDashboard() {
 
   const [formData, setFormData] = useState({
     title: "",
-    brand: "", // Added brand field
+    brand: "", 
     price: "",
     description: "",
   });
+
+  // NEW: Specifications State
+  const [specifications, setSpecifications] = useState<{key: string, value: string}[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [newCategoryParent, setNewCategoryParent] = useState("Tools & Equipment");
@@ -88,7 +91,7 @@ export default function AdminDashboard() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  // FETCH INVENTORY ON LOAD
+  // FETCH INVENTORY
   const fetchInventory = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "products"));
@@ -107,6 +110,21 @@ export default function AdminDashboard() {
   // FORM HANDLERS
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // SPECIFICATION HANDLERS
+  const addSpecification = () => {
+    setSpecifications([...specifications, { key: "", value: "" }]);
+  };
+
+  const updateSpecification = (index: number, field: 'key' | 'value', val: string) => {
+    const newSpecs = [...specifications];
+    newSpecs[index][field] = val;
+    setSpecifications(newSpecs);
+  };
+
+  const removeSpecification = (index: number) => {
+    setSpecifications(specifications.filter((_, i) => i !== index));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +148,7 @@ export default function AdminDashboard() {
   // RESET FORM
   const resetForm = () => {
     setFormData({ title: "", brand: "", price: "", description: "" });
+    setSpecifications([]); // Reset specs
     setSelectedCategory("");
     setNewCategoryName("");
     setImageFiles([]);
@@ -145,10 +164,13 @@ export default function AdminDashboard() {
     setEditingId(product.id);
     setFormData({
       title: product.title || "",
-      brand: product.brand || "", // Load brand if it exists
+      brand: product.brand || "",
       price: product.price ? product.price.toString() : "",
       description: product.description || "",
     });
+    
+    // Load specs if they exist
+    setSpecifications(product.specifications || []);
     
     const categoryExists = groupedCategories.some(g => g.options.some(opt => opt.value === product.category));
     if (categoryExists) {
@@ -180,7 +202,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // SUBMIT FORM (CREATE OR UPDATE)
+  // SUBMIT FORM
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -204,10 +226,12 @@ export default function AdminDashboard() {
       return;
     }
 
+    // Filter out any blank specifications before saving
+    const cleanedSpecifications = specifications.filter(spec => spec.key.trim() !== "" && spec.value.trim() !== "");
+
     try {
       const uploadedUrls: string[] = [...existingImages]; 
 
-      // Upload new images to Blob
       for (let i = 0; i < imageFiles.length; i++) {
         const file = imageFiles[i];
         const uploadData = new FormData();
@@ -222,11 +246,12 @@ export default function AdminDashboard() {
 
       const productPayload = {
         title: formData.title,
-        brand: formData.brand.trim(), // Save the brand to Firebase
+        brand: formData.brand.trim(),
         price: parseFloat(formData.price),
         category: finalCategorySlug,
         mainCategory: finalMainCategory,
         description: formData.description,
+        specifications: cleanedSpecifications, // Save to Firebase
         images: uploadedUrls,
       };
 
@@ -258,7 +283,6 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-brand-black pt-32 pb-24 px-6 md:px-12 text-white font-sans">
       <div className="max-w-5xl mx-auto space-y-12">
         
-        {/* HEADER */}
         <div className="flex justify-between items-center">
           <h1 className="font-serif text-3xl md:text-4xl">Admin Dashboard</h1>
           <Link href="/" className="text-brand-silver hover:text-brand-gold text-xs uppercase tracking-widest transition-colors">
@@ -287,6 +311,7 @@ export default function AdminDashboard() {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              
               {/* Left Column: Text Inputs */}
               <div className="space-y-6">
                 <div>
@@ -294,7 +319,6 @@ export default function AdminDashboard() {
                   <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="e.g. Royal Blue Sapphire" className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
                 </div>
 
-                {/* NEW BRAND INPUT */}
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Brand (Optional)</label>
                   <input type="text" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g. Grobet, Foredom, etc." className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
@@ -320,23 +344,6 @@ export default function AdminDashboard() {
                       <option value="ADD_NEW" className="font-semibold text-brand-gold bg-brand-black text-sm normal-case">+ Create New Subcategory...</option>
                     </optgroup>
                   </select>
-
-                  {selectedCategory === "ADD_NEW" && (
-                    <div className="mt-4 p-5 border border-neutral-700 rounded-sm bg-brand-black/50 space-y-4 animate-in fade-in">
-                      <div>
-                        <label className="block text-[10px] uppercase tracking-widest text-brand-silver mb-2">Assign to Parent Category</label>
-                        <select value={newCategoryParent} onChange={(e) => setNewCategoryParent(e.target.value)} className="w-full bg-brand-dark border border-neutral-700 rounded-sm px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold">
-                          <option value="Jewelry">Jewelry</option>
-                          <option value="Gemstones">Gemstones</option>
-                          <option value="Tools & Equipment">Tools & Equipment</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-[10px] uppercase tracking-widest text-brand-silver mb-2">New Subcategory Name</label>
-                        <input type="text" placeholder="e.g. Diamond Testers" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} className="w-full bg-brand-dark border border-neutral-700 rounded-sm px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-gold" required />
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -356,15 +363,12 @@ export default function AdminDashboard() {
                         <Image src={img} alt="Existing Preview" fill className="object-cover opacity-80" unoptimized />
                         <button type="button" onClick={() => removeExistingImage(index)} className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
                           <Trash2 size={20} className="hover:text-red-500 transition-colors mb-1" />
-                          <span className="text-[10px] uppercase">Remove</span>
                         </button>
                       </div>
                     ))}
-                    
                     {imagePreviews.map((preview, index) => (
                       <div key={`new-${index}`} className="relative aspect-square rounded-sm overflow-hidden border border-emerald-500/50 group bg-brand-black">
                         <Image src={preview} alt={`New Preview ${index}`} fill className="object-cover" unoptimized />
-                        <span className="absolute top-1 left-1 bg-emerald-500 text-black text-[8px] font-bold px-1 rounded uppercase z-10">New</span>
                         <button type="button" onClick={() => removeNewImage(index)} className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white z-20">
                           <Trash2 size={20} className="hover:text-red-500 transition-colors" />
                         </button>
@@ -375,18 +379,52 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Description</label>
-              <textarea name="description" required rows={4} value={formData.description} onChange={handleChange} placeholder="Describe the product..." className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors resize-none"></textarea>
+            {/* DESCRIPTION & SPECIFICATIONS */}
+            <div className="pt-6 border-t border-neutral-800 space-y-8">
+              
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Description</label>
+                <textarea name="description" required rows={4} value={formData.description} onChange={handleChange} placeholder="Describe the product..." className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors resize-none"></textarea>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Specifications & Features (Optional)</label>
+                {specifications.map((spec, index) => (
+                  <div key={index} className="flex gap-4 mb-3">
+                    <input
+                      type="text"
+                      placeholder="Attribute (e.g. Material)"
+                      value={spec.key}
+                      onChange={(e) => updateSpecification(index, 'key', e.target.value)}
+                      className="w-1/3 bg-brand-black border border-neutral-800 rounded-sm px-4 py-2 text-white text-sm focus:border-brand-gold focus:outline-none"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Value (e.g. Steel)"
+                      value={spec.value}
+                      onChange={(e) => updateSpecification(index, 'value', e.target.value)}
+                      className="flex-1 bg-brand-black border border-neutral-800 rounded-sm px-4 py-2 text-white text-sm focus:border-brand-gold focus:outline-none"
+                    />
+                    <button type="button" onClick={() => removeSpecification(index)} className="text-neutral-500 hover:text-red-500 transition-colors px-2">
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                ))}
+                
+                <button type="button" onClick={addSpecification} className="text-brand-gold text-[10px] uppercase tracking-widest hover:text-white transition-colors flex items-center gap-1 mt-3 py-2 px-4 border border-brand-gold/30 hover:border-brand-gold rounded-sm rounded-sm">
+                  <Plus size={14} /> Add Specification
+                </button>
+              </div>
+
             </div>
 
-            <button type="submit" disabled={loading} className="w-full py-4 bg-brand-gold text-brand-black font-sans text-xs uppercase tracking-widest rounded-sm hover:bg-white transition-colors font-semibold flex justify-center items-center gap-2 disabled:opacity-50">
+            <button type="submit" disabled={loading} className="w-full py-4 bg-brand-gold text-brand-black font-sans text-xs uppercase tracking-widest rounded-sm hover:bg-white transition-colors font-semibold flex justify-center items-center gap-2 disabled:opacity-50 mt-8">
               {loading ? (isEditing ? "Updating Database..." : "Uploading & Saving...") : <><Upload size={16} /> {isEditing ? "Update Product" : "Publish Product"}</>}
             </button>
           </form>
         </div>
 
-        {/* BOTTOM SECTION: INVENTORY MANAGEMENT */}
+        {/* BOTTOM SECTION: INVENTORY */}
         <div className="bg-brand-dark border border-neutral-900 rounded-sm p-8 md:p-10">
           <h2 className="font-serif text-2xl mb-8 border-b border-neutral-800 pb-4">Current Inventory</h2>
           
@@ -399,7 +437,6 @@ export default function AdminDashboard() {
                   <tr>
                     <th className="px-4 py-3 font-medium">Product Name</th>
                     <th className="px-4 py-3 font-medium">Category</th>
-                    <th className="px-4 py-3 font-medium">Brand</th>
                     <th className="px-4 py-3 font-medium">Price</th>
                     <th className="px-4 py-3 font-medium text-right">Actions</th>
                   </tr>
@@ -409,19 +446,12 @@ export default function AdminDashboard() {
                     <tr key={product.id} className="border-b border-neutral-800/50 hover:bg-brand-black/30 transition-colors">
                       <td className="px-4 py-4 text-white font-medium flex items-center gap-3">
                         <div className="w-10 h-10 relative bg-brand-black rounded-sm border border-neutral-800 overflow-hidden shrink-0">
-                          <Image 
-                            src={(product.images && product.images.length > 0) ? product.images[0] : "https://placehold.co/100x100/111111/444444?text=X"} 
-                            alt={product.title} 
-                            fill 
-                            className="object-cover" 
-                            unoptimized 
-                          />
+                          <Image src={(product.images && product.images.length > 0) ? product.images[0] : "https://placehold.co/100x100"} alt="preview" fill className="object-cover" unoptimized />
                         </div>
                         {product.title}
                       </td>
                       <td className="px-4 py-4">{product.category}</td>
-                      <td className="px-4 py-4">{product.brand || "-"}</td>
-                      <td className="px-4 py-4">${product.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td className="px-4 py-4">${product.price?.toLocaleString()}</td>
                       <td className="px-4 py-4 text-right">
                         <div className="flex justify-end gap-3">
                           <button onClick={() => handleEdit(product)} className="text-brand-gold hover:text-white transition-colors text-xs uppercase tracking-widest flex items-center gap-1">
