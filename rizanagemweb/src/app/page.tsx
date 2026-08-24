@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import CategoryCircles from "@/components/CategoryCircles";
 import CategoryGrid from "@/components/CategoryGrid";
-import CustomerFavorites from "@/components/CustomerFavorites";
+import FeaturedTools from "@/components/FeaturedTools"; // <-- Imported new component
 import Features from "@/components/Features";
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
       <Hero />
       <CategoryCircles />
       <CategoryGrid />
-      <CustomerFavorites />
+      <FeaturedTools /> {/* <-- Using the new component */}
       <Features />
     </div>
   );
