@@ -35,7 +35,7 @@ export default function FeaturedTools() {
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
       const { current } = scrollContainerRef;
-      const scrollAmount = 350; 
+      const scrollAmount = 300; 
       if (direction === "left") {
         current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
       } else {
@@ -70,8 +70,8 @@ export default function FeaturedTools() {
 
         {loading ? (
           <div className="flex gap-6 overflow-hidden">
-            {[1, 2, 3, 4].map((n) => (
-              <div key={n} className="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-brand-dark/50 animate-pulse rounded-sm border border-neutral-900"></div>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <div key={n} className="w-[240px] md:w-[260px] shrink-0 aspect-[4/5] bg-brand-dark/50 animate-pulse rounded-sm border border-neutral-900"></div>
             ))}
           </div>
         ) : (
@@ -87,7 +87,7 @@ export default function FeaturedTools() {
                 <Link 
                   href={`/products/${tool.id}`} 
                   key={tool.id} 
-                  className="min-w-[280px] md:min-w-[320px] group cursor-pointer flex flex-col snap-start"
+                  className="w-[240px] md:w-[260px] shrink-0 group cursor-pointer flex flex-col snap-start"
                 >
                   <div className="relative w-full aspect-[4/5] bg-brand-dark mb-4 overflow-hidden rounded-sm border border-neutral-900">
                     {productImage ? (
@@ -110,7 +110,7 @@ export default function FeaturedTools() {
                   </div>
 
                   <div className="flex flex-col items-center text-center mt-auto">
-                    <h3 className="font-serif text-lg text-white mb-1 group-hover:text-brand-gold transition-colors">
+                    <h3 className="font-serif text-lg text-white mb-1 group-hover:text-brand-gold transition-colors truncate w-full px-2">
                       {tool.title}
                     </h3>
                     <p className="font-sans text-brand-silver text-sm">
