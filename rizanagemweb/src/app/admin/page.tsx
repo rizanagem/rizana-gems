@@ -74,6 +74,7 @@ export default function AdminDashboard() {
 
   const [formData, setFormData] = useState({
     title: "",
+    brand: "", // Added brand field
     price: "",
     description: "",
   });
@@ -83,16 +84,15 @@ export default function AdminDashboard() {
   const [newCategoryName, setNewCategoryName] = useState("");
 
   // IMAGE STATES
-  const [existingImages, setExistingImages] = useState<string[]>([]); // URLs from Firebase when editing
-  const [imageFiles, setImageFiles] = useState<File[]>([]); // New files to upload
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Previews for new files
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   // FETCH INVENTORY ON LOAD
   const fetchInventory = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "products"));
       const productsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // Sort by newest first based on createdAt
       productsData.sort((a: any, b: any) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
       setInventory(productsData);
     } catch (error) {
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
 
   // RESET FORM
   const resetForm = () => {
-    setFormData({ title: "", price: "", description: "" });
+    setFormData({ title: "", brand: "", price: "", description: "" });
     setSelectedCategory("");
     setNewCategoryName("");
     setImageFiles([]);
@@ -144,25 +144,24 @@ export default function AdminDashboard() {
     setIsEditing(true);
     setEditingId(product.id);
     setFormData({
-      title: product.title,
-      price: product.price.toString(),
-      description: product.description,
+      title: product.title || "",
+      brand: product.brand || "", // Load brand if it exists
+      price: product.price ? product.price.toString() : "",
+      description: product.description || "",
     });
     
-    // Attempt to match category, otherwise fall back to ADD_NEW if it was custom
     const categoryExists = groupedCategories.some(g => g.options.some(opt => opt.value === product.category));
     if (categoryExists) {
       setSelectedCategory(product.category);
     } else {
       setSelectedCategory("ADD_NEW");
-      setNewCategoryName(product.category); // Using the slug as the name for simplicity
+      setNewCategoryName(product.category); 
     }
 
     setExistingImages(product.images || []);
     setImageFiles([]);
     setImagePreviews([]);
     
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -173,7 +172,7 @@ export default function AdminDashboard() {
     try {
       await deleteDoc(doc(db, "products", id));
       alert("Product deleted successfully.");
-      fetchInventory(); // Refresh the table
+      fetchInventory(); 
       if (isEditing && editingId === id) resetForm();
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -206,7 +205,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      const uploadedUrls: string[] = [...existingImages]; // Keep old images that weren't deleted
+      const uploadedUrls: string[] = [...existingImages]; 
 
       // Upload new images to Blob
       for (let i = 0; i < imageFiles.length; i++) {
@@ -223,6 +222,7 @@ export default function AdminDashboard() {
 
       const productPayload = {
         title: formData.title,
+        brand: formData.brand.trim(), // Save the brand to Firebase
         price: parseFloat(formData.price),
         category: finalCategorySlug,
         mainCategory: finalMainCategory,
@@ -231,13 +231,11 @@ export default function AdminDashboard() {
       };
 
       if (isEditing) {
-        // UPDATE EXISTING DOCUMENT
         await updateDoc(doc(db, "products", editingId), {
           ...productPayload,
-          updatedAt: new Date(), // Optional tracking field
+          updatedAt: new Date(), 
         });
       } else {
-        // CREATE NEW DOCUMENT
         await addDoc(collection(db, "products"), {
           ...productPayload,
           createdAt: new Date(),
@@ -246,7 +244,7 @@ export default function AdminDashboard() {
 
       setSuccess(true);
       resetForm();
-      fetchInventory(); // Refresh table immediately
+      fetchInventory(); 
 
     } catch (error: any) {
       console.error("Error saving product: ", error);
@@ -271,7 +269,6 @@ export default function AdminDashboard() {
         {/* TOP SECTION: ADD/EDIT FORM */}
         <div className="bg-brand-dark border border-neutral-900 rounded-sm p-8 md:p-10 relative">
           
-          {/* Cancel Edit Button */}
           {isEditing && (
             <button onClick={resetForm} className="absolute top-8 right-8 text-neutral-400 hover:text-white flex items-center gap-2 text-xs uppercase tracking-widest">
               <X size={14} /> Cancel Edit
@@ -295,6 +292,12 @@ export default function AdminDashboard() {
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Product Name</label>
                   <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="e.g. Royal Blue Sapphire" className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
+                </div>
+
+                {/* NEW BRAND INPUT */}
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Brand (Optional)</label>
+                  <input type="text" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g. Grobet, Foredom, etc." className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
                 </div>
 
                 <div>
@@ -341,15 +344,13 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Product Images</label>
                 <input type="file" multiple accept="image/*" onChange={handleFileChange} id="image-upload" className="hidden" />
-                <label htmlFor="image-upload" className="w-full flex flex-col items-center justify-center gap-2 border-2 border-dashed border-neutral-700 rounded-sm p-8 text-neutral-500 hover:text-brand-gold hover:border-brand-gold cursor-pointer transition-colors bg-brand-black">
+                <label htmlFor="image-upload" className="w-full flex flex-col items-center justify-center gap-2 border-2 border-dashed border-neutral-700 rounded-sm p-8 text-neutral-500 hover:text-brand-gold hover:border-brand-gold cursor-pointer transition-colors bg-brand-black h-48">
                   <ImagePlus size={24} />
                   <span className="text-xs uppercase tracking-widest font-semibold">Click to Add Images</span>
                 </label>
 
-                {/* Render Existing Images (When Editing) */}
                 {(existingImages.length > 0 || imagePreviews.length > 0) && (
                   <div className="grid grid-cols-3 gap-3 mt-4">
-                    {/* Existing Images */}
                     {existingImages.map((img, index) => (
                       <div key={`existing-${index}`} className="relative aspect-square rounded-sm overflow-hidden border border-brand-gold/30 group bg-brand-black">
                         <Image src={img} alt="Existing Preview" fill className="object-cover opacity-80" unoptimized />
@@ -360,7 +361,6 @@ export default function AdminDashboard() {
                       </div>
                     ))}
                     
-                    {/* New Upload Previews */}
                     {imagePreviews.map((preview, index) => (
                       <div key={`new-${index}`} className="relative aspect-square rounded-sm overflow-hidden border border-emerald-500/50 group bg-brand-black">
                         <Image src={preview} alt={`New Preview ${index}`} fill className="object-cover" unoptimized />
@@ -399,6 +399,7 @@ export default function AdminDashboard() {
                   <tr>
                     <th className="px-4 py-3 font-medium">Product Name</th>
                     <th className="px-4 py-3 font-medium">Category</th>
+                    <th className="px-4 py-3 font-medium">Brand</th>
                     <th className="px-4 py-3 font-medium">Price</th>
                     <th className="px-4 py-3 font-medium text-right">Actions</th>
                   </tr>
@@ -419,6 +420,7 @@ export default function AdminDashboard() {
                         {product.title}
                       </td>
                       <td className="px-4 py-4">{product.category}</td>
+                      <td className="px-4 py-4">{product.brand || "-"}</td>
                       <td className="px-4 py-4">${product.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                       <td className="px-4 py-4 text-right">
                         <div className="flex justify-end gap-3">
