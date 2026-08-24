@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Gem, RotateCcw, Truck, Sparkles } from "lucide-react";
+import { Gem, Palette, Headset, Lightbulb } from "lucide-react";
 
 export default function Features() {
   return (
@@ -10,26 +10,34 @@ export default function Features() {
           
           <div className="flex flex-col items-center text-center">
             <Gem className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
-            <h4 className="font-serif text-white text-lg mb-2">100% Solid Gold & Platinum</h4>
-            <p className="font-sans text-brand-silver text-xs tracking-wide">Made to Last Forever</p>
+            <h4 className="font-serif text-white text-lg mb-2">Certified Natural Gemstones</h4>
+            <p className="font-sans text-brand-silver text-xs tracking-wide leading-relaxed">
+              Every gemstone is lab-certified and ethically sourced from trusted origins.
+            </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
-            <RotateCcw className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
-            <h4 className="font-serif text-white text-lg mb-2">30 Day Hassle-Free Returns</h4>
-            <p className="font-sans text-brand-silver text-xs tracking-wide">Fast & Free Delivery</p>
+            <Palette className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
+            <h4 className="font-serif text-white text-lg mb-2">Custom Jewelry Options</h4>
+            <p className="font-sans text-brand-silver text-xs tracking-wide leading-relaxed">
+              Tailor-made designs crafted to reflect your style and complement your gemstone.
+            </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
-            <Truck className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
-            <h4 className="font-serif text-white text-lg mb-2">Free Shipping Worldwide</h4>
-            <p className="font-sans text-brand-silver text-xs tracking-wide">Insured & Secure</p>
+            <Headset className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
+            <h4 className="font-serif text-white text-lg mb-2">Expert Gemologist Support</h4>
+            <p className="font-sans text-brand-silver text-xs tracking-wide leading-relaxed">
+              Free consultation to help you find the perfect gemstone within your budget.
+            </p>
           </div>
 
           <div className="flex flex-col items-center text-center">
-            <Sparkles className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
-            <h4 className="font-serif text-white text-lg mb-2">Lifetime Care</h4>
-            <p className="font-sans text-brand-silver text-xs tracking-wide">Lifetime Cleaning & Care</p>
+            <Lightbulb className="text-brand-gold mb-4" size={28} strokeWidth={1.5} />
+            <h4 className="font-serif text-white text-lg mb-2">Practical</h4>
+            <p className="font-sans text-brand-silver text-xs tracking-wide leading-relaxed">
+              Our products are innovative, practically designed to make your life easier everyday.
+            </p>
           </div>
 
         </div>
