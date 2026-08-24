@@ -3,14 +3,46 @@ import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 
 const categories = [
-  { name: "Rings", href: "/categories/rings" },
-  { name: "Necklaces", href: "/categories/necklaces" },
-  { name: "Earrings", href: "/categories/earrings" },
-  { name: "Bracelets", href: "/categories/bracelets" },
-  { name: "Gemstones", href: "/categories/gemstones" },
-  { name: "Men's Jewelry", href: "/categories/mens" },
-  { name: "Wedding", href: "/categories/wedding" },
-  { name: "Watches", href: "/categories/watches" },
+  { 
+    name: "Blue Sapphire", 
+    href: "/collections/blue-sapphire", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Blue+Sapphire" 
+  },
+  { 
+    name: "Padparadscha Sapphire", 
+    href: "/collections/padparadscha-sapphire", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Padparadscha" 
+  },
+  { 
+    name: "Star Sapphire", 
+    href: "/collections/star-sapphire", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Star+Sapphire" 
+  },
+  { 
+    name: "Ruby", 
+    href: "/collections/ruby", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Ruby" 
+  },
+  { 
+    name: "Cat’s Eye", 
+    href: "/collections/cats-eye", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Cats+Eye" 
+  },
+  { 
+    name: "Alexandrite", 
+    href: "/collections/alexandrite", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Alexandrite" 
+  },
+  { 
+    name: "Spinel", 
+    href: "/collections/spinel", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Spinel" 
+  },
+  { 
+    name: "Garnet", 
+    href: "/collections/garnet", 
+    image: "https://placehold.co/200x200/1a1a1a/666666?text=Garnet" 
+  }
 ];
 
 export default function CategoryCircles() {
@@ -25,16 +57,16 @@ export default function CategoryCircles() {
               href={category.href}
               className="flex flex-col items-center gap-3 min-w-[80px] group/item"
             >
-              <div className="relative w-20 h-20 rounded-full bg-brand-dark border border-neutral-800 flex items-center justify-center group-hover/item:border-brand-gold transition-colors overflow-hidden">
+              <div className="relative w-20 h-20 rounded-full bg-brand-dark border border-neutral-800 flex items-center justify-center group-hover/item:border-brand-gold transition-colors overflow-hidden shrink-0">
                 <Image 
-                  src="https://placehold.co/200x200/1a1a1a/666666?text=200x200" 
+                  src={category.image} 
                   alt={category.name}
                   fill
                   className="object-cover"
                   unoptimized
                 />
               </div>
-              <span className="font-sans text-brand-silver text-xs tracking-wide group-hover/item:text-white transition-colors">
+              <span className="font-sans text-brand-silver text-xs tracking-wide group-hover/item:text-white transition-colors text-center whitespace-nowrap">
                 {category.name}
               </span>
             </Link>
