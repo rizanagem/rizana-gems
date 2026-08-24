@@ -1,5 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
-import { Gem, Palette, Headset, Lightbulb, Star } from "lucide-react";
+import { Gem, Palette, Headset, Lightbulb, Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 const reviews = [
   {
@@ -25,6 +28,20 @@ const reviews = [
 ];
 
 export default function Features() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const { current } = scrollContainerRef;
+      const scrollAmount = 300; 
+      if (direction === "left") {
+        current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      } else {
+        current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section className="w-full bg-brand-dark border-t border-neutral-900">
       {/* Crafted to Perfection - 4 Column Grid */}
@@ -67,8 +84,8 @@ export default function Features() {
       </div>
 
       {/* The Rizana Experience Section */}
-      <div className="w-full bg-brand-black py-20 px-6 md:px-12 text-center border-t border-neutral-900">
-        <div className="max-w-4xl mx-auto">
+      <div className="w-full bg-brand-black py-20 text-center border-t border-neutral-900">
+        <div className="max-w-4xl mx-auto px-6 md:px-12">
           <p className="text-brand-gold uppercase tracking-[0.2em] text-xs font-semibold mb-4">The Rizana Experience</p>
           <h2 className="font-serif text-3xl md:text-5xl text-white mb-6">
             Crafted with Passion.<br />
@@ -79,15 +96,34 @@ export default function Features() {
           </p>
           <Link 
             href="/about" 
-            className="inline-flex items-center gap-2 text-white uppercase tracking-widest text-xs border-b border-brand-gold hover:text-brand-gold pb-1 transition-colors group mb-20"
+            className="inline-flex items-center gap-2 text-white uppercase tracking-widest text-xs border-b border-brand-gold hover:text-brand-gold pb-1 transition-colors group mb-12"
           >
             Discover More <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
           </Link>
         </div>
 
         {/* Customer Reviews Carousel */}
-        <div className="max-w-7xl mx-auto mt-4">
+        <div className="max-w-7xl mx-auto relative px-6 md:px-12">
+          
+          {/* Navigation Arrows */}
+          <div className="flex justify-end gap-2 mb-6">
+            <button 
+              onClick={() => scroll("left")} 
+              className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-brand-silver hover:text-white hover:border-brand-gold transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button 
+              onClick={() => scroll("right")} 
+              className="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-brand-silver hover:text-white hover:border-brand-gold transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+
+          {/* Scrollable Container */}
           <div 
+            ref={scrollContainerRef}
             className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8 text-left"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
@@ -107,7 +143,6 @@ export default function Features() {
                   </p>
                 </div>
                 
-                {/* Footer pinned to bottom by justify-between */}
                 <div className="flex items-center gap-3 border-t border-neutral-800 pt-6">
                   <div className="w-8 h-8 rounded-full bg-brand-black flex items-center justify-center text-brand-gold font-serif text-sm border border-neutral-700 shrink-0">
                     {review.name.charAt(0)}
