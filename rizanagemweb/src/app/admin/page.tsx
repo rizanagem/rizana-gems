@@ -8,6 +8,16 @@ import { Upload, Plus, CheckCircle, Trash2, ImagePlus, Edit3, X } from "lucide-r
 import Link from "next/link";
 import Image from "next/image";
 
+const brandSuggestions = [
+  "AGTA", "American Mined Collection", "Avalon", "Bonny Doon", "Busch", 
+  "Dedeco", "Dura-Bull", "Durston Rolling Mills", "ET Hydrogen", "Foredom", 
+  "Formlabs", "Fretz", "Friedrich Dick", "GRS", "Jool Tool", "Lampert", 
+  "Legor", "Lindstrom Tools", "Merard", "Neutec", "Nicem", "Nordt", "Orion", 
+  "Paragon", "Raytech", "Rio Grande", "Schultheiss", "Sunshine Polishing Cloths", 
+  "Swanstrom", "Technique", "Thompson Enamel", "Vallorbe", "Wolf Tools", 
+  "Wubbers", "Xuron"
+];
+
 const groupedCategories = [
   {
     label: "Jewelry",
@@ -79,7 +89,6 @@ export default function AdminDashboard() {
     description: "",
   });
 
-  // NEW: Specifications State
   const [specifications, setSpecifications] = useState<{key: string, value: string}[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -148,7 +157,7 @@ export default function AdminDashboard() {
   // RESET FORM
   const resetForm = () => {
     setFormData({ title: "", brand: "", price: "", description: "" });
-    setSpecifications([]); // Reset specs
+    setSpecifications([]);
     setSelectedCategory("");
     setNewCategoryName("");
     setImageFiles([]);
@@ -169,7 +178,6 @@ export default function AdminDashboard() {
       description: product.description || "",
     });
     
-    // Load specs if they exist
     setSpecifications(product.specifications || []);
     
     const categoryExists = groupedCategories.some(g => g.options.some(opt => opt.value === product.category));
@@ -226,7 +234,6 @@ export default function AdminDashboard() {
       return;
     }
 
-    // Filter out any blank specifications before saving
     const cleanedSpecifications = specifications.filter(spec => spec.key.trim() !== "" && spec.value.trim() !== "");
 
     try {
@@ -251,7 +258,7 @@ export default function AdminDashboard() {
         category: finalCategorySlug,
         mainCategory: finalMainCategory,
         description: formData.description,
-        specifications: cleanedSpecifications, // Save to Firebase
+        specifications: cleanedSpecifications,
         images: uploadedUrls,
       };
 
@@ -321,7 +328,20 @@ export default function AdminDashboard() {
 
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Brand (Optional)</label>
-                  <input type="text" name="brand" value={formData.brand} onChange={handleChange} placeholder="e.g. Grobet, Foredom, etc." className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
+                  <input 
+                    type="text" 
+                    name="brand" 
+                    value={formData.brand} 
+                    onChange={handleChange} 
+                    list="brand-suggestions"
+                    placeholder="e.g. Foredom, GRS, etc." 
+                    className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" 
+                  />
+                  <datalist id="brand-suggestions">
+                    {brandSuggestions.map((brand, index) => (
+                      <option key={index} value={brand} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div>
