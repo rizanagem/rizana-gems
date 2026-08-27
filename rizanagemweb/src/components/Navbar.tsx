@@ -1,6 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image"; 
-import { Search, User, ShoppingBag, ChevronDown } from "lucide-react";
+import { Search, User, ShoppingBag, ChevronDown, Menu, X } from "lucide-react";
 
 const toolsAndEquipment = [
   { name: "Welders", href: "/collections/welders" },
@@ -39,6 +42,8 @@ const toolsAndEquipment = [
 ];
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="w-full relative z-50">
       {/* Top Announcement Bar */}
@@ -52,8 +57,17 @@ export default function Navbar() {
       {/* Main Navigation */}
       <div className="flex justify-between items-center px-6 lg:px-12 py-6 bg-brand-black border-b border-brand-dark">
         
-        {/* Left: Navigation Links (Products) */}
-        <div className="flex-1 flex justify-start">
+        {/* Left: Navigation Links & Mobile Menu Toggle */}
+        <div className="flex-1 flex justify-start items-center">
+          {/* Mobile Hamburger Icon (Hidden on Desktop) */}
+          <button 
+            className="lg:hidden text-brand-silver hover:text-brand-gold transition-colors"
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
+            <Menu size={24} />
+          </button>
+
+          {/* Desktop Navigation (Hidden on Mobile) */}
           <nav className="hidden lg:flex space-x-6 xl:space-x-8 text-sm font-medium tracking-widest uppercase items-center">
             <Link href="/categories/jewelry" className="hover:text-brand-gold transition-colors">Jewelry</Link>
             <Link href="/categories/gemstones" className="hover:text-brand-gold transition-colors">Gemstones</Link>
@@ -64,7 +78,6 @@ export default function Navbar() {
                 Tools & Equipment <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
               </Link>
               
-              {/* Dropdown Container - Back to left-0 since it is on the left side now */}
               <div className="absolute top-full left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 w-[500px]">
                 <div className="bg-brand-black border border-brand-dark shadow-2xl p-6 relative">
                   <ul className="max-h-[50vh] overflow-y-auto custom-scrollbar grid grid-cols-2 gap-x-6 gap-y-4 pr-4 text-left">
@@ -105,7 +118,7 @@ export default function Navbar() {
           </nav>
 
           {/* Icons */}
-          <div className="flex space-x-6 items-center ml-0 lg:ml-6 xl:ml-8 lg:pl-6 xl:pl-8 lg:border-l border-neutral-800">
+          <div className="flex space-x-5 lg:space-x-6 items-center ml-0 lg:ml-6 xl:ml-8 lg:pl-6 xl:pl-8 lg:border-l border-neutral-800">
             <button className="hover:text-brand-gold transition-colors">
               <Search size={20} strokeWidth={1.5} />
             </button>
@@ -124,6 +137,64 @@ export default function Navbar() {
         </div>
         
       </div>
+
+      {/* MOBILE MENU OVERLAY */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] bg-brand-black flex flex-col lg:hidden animate-in fade-in duration-200">
+          <div className="flex justify-between items-center px-6 py-6 border-b border-brand-dark">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <Image 
+                src="/logo.png" 
+                alt="Rizana Gems" 
+                width={120} 
+                height={45} 
+                className="object-contain" 
+              />
+            </Link>
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              className="text-brand-silver hover:text-brand-gold transition-colors"
+            >
+              <X size={28} strokeWidth={1.5} />
+            </button>
+          </div>
+          <div className="flex flex-col p-6 space-y-8 overflow-y-auto pb-20">
+            <Link href="/categories/jewelry" onClick={() => setIsMobileMenuOpen(false)} className="text-white uppercase tracking-widest text-sm hover:text-brand-gold transition-colors">
+              Jewelry
+            </Link>
+            <Link href="/categories/gemstones" onClick={() => setIsMobileMenuOpen(false)} className="text-white uppercase tracking-widest text-sm hover:text-brand-gold transition-colors">
+              Gemstones
+            </Link>
+            <div className="flex flex-col space-y-4">
+              <Link href="/categories/tools" onClick={() => setIsMobileMenuOpen(false)} className="text-white uppercase tracking-widest text-sm hover:text-brand-gold transition-colors">
+                Tools & Equipment
+              </Link>
+              <div className="flex flex-col space-y-3 pl-4 border-l border-brand-dark">
+                {toolsAndEquipment.map((tool, index) => (
+                  <Link 
+                    key={index} 
+                    href={tool.href} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-brand-silver text-xs hover:text-brand-gold transition-colors"
+                  >
+                    {tool.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="h-px bg-brand-dark w-full my-4"></div>
+            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-white uppercase tracking-widest text-sm hover:text-brand-gold transition-colors">
+              About Us
+            </Link>
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-white uppercase tracking-widest text-sm hover:text-brand-gold transition-colors">
+              Contact Us
+            </Link>
+            <Link href="/account" onClick={() => setIsMobileMenuOpen(false)} className="text-white uppercase tracking-widest text-sm hover:text-brand-gold transition-colors flex items-center gap-2">
+              <User size={16} /> My Account
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
