@@ -29,8 +29,8 @@ export default function AnimatedProductGrid({ products }: { products: any[] }) {
             
             {/* FIXED THE LINK HERE to point to /products/ instead of /collections/ */}
             <Link href={`/products/${product.id}`} className="group cursor-pointer flex flex-col h-full">
-              {/* Product Image */}
-              <div className="relative w-full aspect-[4/5] bg-brand-dark mb-4 overflow-hidden rounded-sm flex items-center justify-center">
+              {/* Product Image - Changed aspect-[4/5] to aspect-square */}
+              <div className="relative w-full aspect-square bg-brand-dark mb-4 overflow-hidden rounded-sm flex items-center justify-center">
                 {productImage ? (
                   <img 
                     src={productImage} 

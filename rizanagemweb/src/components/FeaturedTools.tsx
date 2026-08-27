@@ -71,7 +71,7 @@ export default function FeaturedTools() {
         {loading ? (
           <div className="flex gap-6 overflow-hidden">
             {[1, 2, 3, 4, 5].map((n) => (
-              <div key={n} className="w-[240px] md:w-[260px] shrink-0 aspect-[4/5] bg-brand-dark/50 animate-pulse rounded-sm border border-neutral-900"></div>
+              <div key={n} className="w-[240px] md:w-[260px] shrink-0 aspect-square bg-brand-dark/50 animate-pulse rounded-sm border border-neutral-900"></div>
             ))}
           </div>
         ) : (
@@ -89,7 +89,7 @@ export default function FeaturedTools() {
                   key={tool.id} 
                   className="w-[240px] md:w-[260px] shrink-0 group cursor-pointer flex flex-col snap-start"
                 >
-                  <div className="relative w-full aspect-[4/5] bg-brand-dark mb-4 overflow-hidden rounded-sm border border-neutral-900">
+                  <div className="relative w-full aspect-square bg-brand-dark mb-4 overflow-hidden rounded-sm border border-neutral-900">
                     {productImage ? (
                       <Image 
                         src={productImage} 
