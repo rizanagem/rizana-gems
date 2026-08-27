@@ -21,16 +21,14 @@ export default function AnimatedProductGrid({ products }: { products: any[] }) {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {products.map((product) => {
-        // Grab the first image from the array, or fall back to empty string
         const productImage = product.images && product.images.length > 0 ? product.images[0] : "";
+        // Safely grab the product code or fallback to the ID
+        const displayCode = product.productCode || product.id.substring(0, 8).toUpperCase();
 
         return (
           <motion.div variants={item} key={product.id} className="h-full">
-            
-            {/* FIXED THE LINK HERE to point to /products/ instead of /collections/ */}
             <Link href={`/products/${product.id}`} className="group cursor-pointer flex flex-col h-full">
-              {/* Product Image - Changed aspect-[4/5] to aspect-square */}
-              <div className="relative w-full aspect-square bg-brand-dark mb-4 overflow-hidden rounded-sm flex items-center justify-center">
+              <div className="relative w-full aspect-square bg-brand-dark mb-4 overflow-hidden rounded-sm flex items-center justify-center border border-neutral-900">
                 {productImage ? (
                   <img 
                     src={productImage} 
@@ -43,7 +41,6 @@ export default function AnimatedProductGrid({ products }: { products: any[] }) {
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
-                {/* Category Badge */}
                 <span className="absolute top-4 left-4 z-20 text-[10px] uppercase tracking-widest text-brand-silver bg-brand-black/50 px-2 py-1 backdrop-blur-sm">
                   {product.category}
                 </span>
@@ -53,17 +50,19 @@ export default function AnimatedProductGrid({ products }: { products: any[] }) {
                 </button>
               </div>
 
-              {/* Product Details */}
               <div className="flex flex-col items-center text-center mt-auto">
                 <h3 className="font-serif text-lg text-white mb-1 group-hover:text-brand-gold transition-colors">
                   {product.title || product.name}
                 </h3>
                 <p className="font-sans text-brand-silver text-sm">
-                  ${product.price?.toLocaleString()}
+                  ${product.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
+                {/* Product Code Display */}
+                <p className="font-sans text-brand-silver/50 text-[10px] uppercase tracking-widest mt-1.5">
+                  Code: {displayCode}
                 </p>
               </div>
             </Link>
-
           </motion.div>
         );
       })}

@@ -82,6 +82,7 @@ export default function FeaturedTools() {
           >
             {tools.map((tool) => {
               const productImage = tool.images && tool.images.length > 0 ? tool.images[0] : "";
+              const displayCode = tool.productCode || tool.id.substring(0, 8).toUpperCase();
 
               return (
                 <Link 
@@ -115,6 +116,10 @@ export default function FeaturedTools() {
                     </h3>
                     <p className="font-sans text-brand-silver text-sm">
                       ${tool.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
+                    {/* Product Code Display */}
+                    <p className="font-sans text-brand-silver/50 text-[10px] uppercase tracking-widest mt-1.5">
+                      Code: {displayCode}
                     </p>
                   </div>
                 </Link>

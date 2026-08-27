@@ -10,21 +10,18 @@ import {
   Star, Shield, Truck, RotateCcw, 
   Minus, Plus, ShoppingBag, MessageCircle
 } from "lucide-react";
-import ProductAccordion from "@/components/ProductAccordion"; // <-- NEW IMPORT
+import ProductAccordion from "@/components/ProductAccordion"; 
 
 export default function ProductPage() {
   const params = useParams();
   const rawSlug = params?.slug as string;
 
-  // New State for Firebase Data
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // UI State
   const [activeImage, setActiveImage] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  // Fetch the product from Firebase when the page loads
   useEffect(() => {
     if (!rawSlug) return;
 
@@ -37,7 +34,6 @@ export default function ProductPage() {
           const data = docSnap.data();
           setProduct({ id: docSnap.id, ...data });
 
-          // Set the first uploaded image as the main active image
           if (data.images && data.images.length > 0) {
             setActiveImage(data.images[0]);
           } else {
@@ -56,7 +52,6 @@ export default function ProductPage() {
     fetchProduct();
   }, [rawSlug]);
 
-  // Show a loading screen while fetching from Firebase
   if (loading) {
     return (
       <div className="min-h-screen bg-brand-black flex flex-col items-center justify-center text-brand-gold">
@@ -66,7 +61,6 @@ export default function ProductPage() {
     );
   }
 
-  // Show an error if the URL ID doesn't match anything in the database
   if (!product) {
     return (
       <div className="min-h-screen bg-brand-black flex flex-col items-center justify-center text-white">
@@ -78,16 +72,17 @@ export default function ProductPage() {
     );
   }
 
-  // Ensure we always have an array of images to map over
   const images = product.images && product.images.length > 0 
     ? product.images 
     : ["https://placehold.co/800x800/111111/444444?text=No+Image"];
+
+  // Fallback to substring of ID if productCode is missing
+  const displayCode = product.productCode || product.id.substring(0, 8).toUpperCase();
 
   return (
     <div className="w-full bg-brand-black min-h-screen pt-28 pb-24 text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
-        {/* Breadcrumbs */}
         <div className="flex items-center gap-2 font-sans text-xs uppercase tracking-widest text-brand-silver mb-8">
           <Link href="/" className="hover:text-brand-gold transition-colors">Home</Link>
           <span>/</span>
@@ -96,16 +91,13 @@ export default function ProductPage() {
           <span className="text-white truncate max-w-[200px]">{product.title}</span>
         </div>
 
-        {/* Top Section: Gallery & Details */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-24">
           
-          {/* Left: Image Gallery */}
           <div className="flex flex-col gap-4">
             <div className="relative w-full aspect-square bg-brand-dark rounded-sm border border-neutral-900 overflow-hidden">
               <Image src={activeImage} alt={product.title} fill className="object-cover" unoptimized />
             </div>
             
-            {/* Render thumbnails only if there is more than 1 image */}
             {images.length > 1 && (
               <div className="grid grid-cols-4 gap-4">
                 {images.map((img: string, idx: number) => (
@@ -121,16 +113,18 @@ export default function ProductPage() {
             )}
           </div>
 
-          {/* Right: Product Details */}
           <div className="flex flex-col">
             <div className="inline-block border border-brand-gold/50 text-brand-gold text-[10px] uppercase tracking-[0.2em] px-3 py-1 rounded-sm mb-6 w-max">
               Professional Grade
             </div>
             
-            {/* Real Product Title */}
-            <h1 className="font-serif text-4xl md:text-5xl mb-4">{product.title}</h1>
+            <h1 className="font-serif text-4xl md:text-5xl mb-3">{product.title}</h1>
             
-            {/* Real Product Price */}
+            {/* NEW: Display the product code below title */}
+            <p className="font-sans text-brand-silver/80 text-[11px] uppercase tracking-widest mb-4">
+              Product Code: <span className="text-brand-gold font-mono">{displayCode}</span>
+            </p>
+            
             <div className="font-sans text-2xl text-white mb-4">
               ${product.price?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
@@ -142,7 +136,6 @@ export default function ProductPage() {
               <span className="font-sans text-brand-silver text-xs tracking-wide">(Premium Quality)</span>
             </div>
 
-            {/* Quantity & Actions */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <div className="flex items-center justify-between border border-neutral-800 rounded-sm px-4 py-3 sm:w-32">
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="text-brand-silver hover:text-white"><Minus size={16} /></button>
@@ -158,7 +151,6 @@ export default function ProductPage() {
               <MessageCircle size={16} /> Enquire / Request Bulk Pricing
             </button>
 
-            {/* Trust Mini Badges */}
             <div className="grid grid-cols-3 gap-4 border-t border-neutral-900 pt-8">
               <div className="flex flex-col gap-2">
                 <Shield size={20} className="text-brand-gold" strokeWidth={1.5}/>
@@ -174,7 +166,6 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* NEW: Description & Specifications Accordion */}
             <ProductAccordion 
               description={product.description} 
               specifications={product.specifications || []} 
