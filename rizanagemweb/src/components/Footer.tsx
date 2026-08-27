@@ -15,23 +15,24 @@ export default function Footer() {
           <p className="text-sm leading-relaxed mb-6">
             Fine jewelry, rare gemstones, and precision tools—curated with excellence worldwide.
           </p>
-<div className="flex gap-4">
-  <a href="#" className="hover:text-brand-gold transition-colors"><FaFacebook size={18} /></a>
-  <a href="#" className="hover:text-brand-gold transition-colors"><FaInstagram size={18} /></a>
-  <a href="#" className="hover:text-brand-gold transition-colors"><FaTwitter size={18} /></a>
-  <a href="#" className="hover:text-brand-gold transition-colors"><FaYoutube size={18} /></a>
-</div>
+          <div className="flex gap-4">
+            <a href="#" className="hover:text-brand-gold transition-colors"><FaFacebook size={18} /></a>
+            <a href="#" className="hover:text-brand-gold transition-colors"><FaInstagram size={18} /></a>
+            <a href="#" className="hover:text-brand-gold transition-colors"><FaTwitter size={18} /></a>
+            <a href="#" className="hover:text-brand-gold transition-colors"><FaYoutube size={18} /></a>
+          </div>
         </div>
 
         {/* Shop Navigation */}
         <div className="flex flex-col">
           <h4 className="text-white uppercase tracking-widest text-xs font-semibold mb-6">Shop</h4>
           <div className="flex flex-col gap-3 text-sm">
-            <Link href="/jewelry/rings" className="hover:text-brand-gold transition-colors">Rings</Link>
-            <Link href="/jewelry/necklaces" className="hover:text-brand-gold transition-colors">Necklaces</Link>
-            <Link href="/jewelry/earrings" className="hover:text-brand-gold transition-colors">Earrings</Link>
-            <Link href="/gemstones" className="hover:text-brand-gold transition-colors">Gemstones</Link>
-            <Link href="/tools" className="hover:text-brand-gold transition-colors">Tools</Link>
+            {/* UPDATED: Changed from /jewelry/... to /collections/... to match your dynamic routes */}
+            <Link href="/collections/rings" className="hover:text-brand-gold transition-colors">Rings</Link>
+            <Link href="/collections/necklaces" className="hover:text-brand-gold transition-colors">Necklaces</Link>
+            <Link href="/collections/earrings" className="hover:text-brand-gold transition-colors">Earrings</Link>
+            <Link href="/collections/gemstones" className="hover:text-brand-gold transition-colors">Gemstones</Link>
+            <Link href="/collections" className="hover:text-brand-gold transition-colors">Tools</Link>
           </div>
         </div>
 
