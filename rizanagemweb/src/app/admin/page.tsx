@@ -73,6 +73,9 @@ const groupedCategories = [
   }
 ];
 
+// Helper function to generate a random product code
+const generateProductCode = () => "RG-" + Math.floor(100000 + Math.random() * 900000).toString();
+
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -84,6 +87,7 @@ export default function AdminDashboard() {
 
   const [formData, setFormData] = useState({
     title: "",
+    productCode: "", // NEW: Product code field
     brand: "", 
     price: "",
     description: "",
@@ -114,6 +118,8 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchInventory();
+    // Auto-generate a code for the initial empty form
+    setFormData(prev => ({ ...prev, productCode: generateProductCode() }));
   }, []);
 
   // FORM HANDLERS
@@ -156,7 +162,13 @@ export default function AdminDashboard() {
 
   // RESET FORM
   const resetForm = () => {
-    setFormData({ title: "", brand: "", price: "", description: "" });
+    setFormData({ 
+      title: "", 
+      productCode: generateProductCode(), // Auto-generate new code on reset
+      brand: "", 
+      price: "", 
+      description: "" 
+    });
     setSpecifications([]);
     setSelectedCategory("");
     setNewCategoryName("");
@@ -173,6 +185,7 @@ export default function AdminDashboard() {
     setEditingId(product.id);
     setFormData({
       title: product.title || "",
+      productCode: product.productCode || product.id.substring(0, 8).toUpperCase(), // Fallback to ID if no code exists
       brand: product.brand || "",
       price: product.price ? product.price.toString() : "",
       description: product.description || "",
@@ -253,6 +266,7 @@ export default function AdminDashboard() {
 
       const productPayload = {
         title: formData.title,
+        productCode: formData.productCode.trim() || generateProductCode(),
         brand: formData.brand.trim(),
         price: parseFloat(formData.price),
         category: finalCategorySlug,
@@ -326,6 +340,17 @@ export default function AdminDashboard() {
                   <input type="text" name="title" required value={formData.title} onChange={handleChange} placeholder="e.g. Royal Blue Sapphire" className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
                 </div>
 
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Product Code (SKU)</label>
+                    <input type="text" name="productCode" required value={formData.productCode} onChange={handleChange} placeholder="e.g. RG-123456" className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Price (USD)</label>
+                    <input type="number" name="price" required min="0" step="0.01" value={formData.price} onChange={handleChange} placeholder="e.g. 2850.00" className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Brand (Optional)</label>
                   <input 
@@ -342,11 +367,6 @@ export default function AdminDashboard() {
                       <option key={index} value={brand} />
                     ))}
                   </datalist>
-                </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-brand-silver mb-2">Price (USD)</label>
-                  <input type="number" name="price" required min="0" step="0.01" value={formData.price} onChange={handleChange} placeholder="e.g. 2850.00" className="w-full bg-brand-black border border-neutral-800 rounded-sm px-4 py-3 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors" />
                 </div>
 
                 <div>
@@ -456,6 +476,7 @@ export default function AdminDashboard() {
                 <thead className="text-xs uppercase tracking-widest text-neutral-500 bg-brand-black border-b border-neutral-800">
                   <tr>
                     <th className="px-4 py-3 font-medium">Product Name</th>
+                    <th className="px-4 py-3 font-medium">Code</th>
                     <th className="px-4 py-3 font-medium">Category</th>
                     <th className="px-4 py-3 font-medium">Price</th>
                     <th className="px-4 py-3 font-medium text-right">Actions</th>
@@ -470,6 +491,7 @@ export default function AdminDashboard() {
                         </div>
                         {product.title}
                       </td>
+                      <td className="px-4 py-4 font-mono text-[11px] text-brand-gold">{product.productCode || product.id.substring(0, 8).toUpperCase()}</td>
                       <td className="px-4 py-4">{product.category}</td>
                       <td className="px-4 py-4">${product.price?.toLocaleString()}</td>
                       <td className="px-4 py-4 text-right">
