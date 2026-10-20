@@ -1,8 +1,11 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import FilteredProductGrid from "@/components/FilteredProductGrid"; // <-- We changed this import
+import FilteredProductGrid from "@/components/FilteredProductGrid";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function getCategoryProducts(categorySlug: string) {
   // Capitalize or format the slug to match your Firestore category field (e.g., "jewelry" -> "Jewelry")
@@ -51,7 +54,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
         {/* Product Grid or Empty State */}
         {products.length > 0 ? (
-          <FilteredProductGrid products={products} /> /* <-- We changed this component */
+          <FilteredProductGrid products={products} />
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <p className="font-serif text-white text-xl mb-2">No items found in this category yet.</p>

@@ -2,13 +2,21 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import AnimatedProductGrid from "@/components/AnimatedProductGrid";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function getProducts() {
-  const querySnapshot = await getDocs(collection(db, "products"));
-  const products: any[] = [];
-  querySnapshot.forEach((doc) => {
-    products.push({ id: doc.id, ...doc.data() });
-  });
-  return products;
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const products: any[] = [];
+    querySnapshot.forEach((doc) => {
+      products.push({ id: doc.id, ...doc.data() });
+    });
+    return products;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
 }
 
 export default async function CollectionsPage() {
