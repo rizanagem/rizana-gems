@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-inter), Inter, sans-serif;
   --color-brand-black: #050505;
   --color-brand-dark: #121212;
   --color-brand-gold: #d4af37;
